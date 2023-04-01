@@ -1,15 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import "./index.css";
+import { App } from "./pages/AppPage";
+import { Home } from "./pages/HomePage";
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
+const rootElement = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-root.render(
+
+if (!rootElement) {
+  throw new Error("Failed to find root element");
+}
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/app",
+    element: <App />,
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
