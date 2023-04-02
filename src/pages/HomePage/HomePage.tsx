@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Content } from "../../components/Content";
 import { Divider } from "../../components/Divider";
 import { GenerateButton } from "../../components/GenerateButton";
@@ -7,6 +7,26 @@ import { PersonalizationItems } from "../../components/PersonalizationItems";
 import { PseudoNavBar } from "../../components/PseudoNavBar";
 
 export const Home: React.FC = () => {
+  const [componentName, setComponentName] = useState('');
+  const [options, setOptions] = useState({ whentouse: false, anatomy: false, placement: false, content: false, behavior: false, states: false, interactions: false });
+  const [addOptions, setAddOptions] = useState({ links: '0', interactivestates: false, fontconfig: false, sizevariation: false, bestpractices: false, codeexamples: false });
+
+  const changeOptions = (itemName: string, itemValue: boolean) => {
+    if (itemName === "behavior" && !itemValue) {
+      setOptions(state => ({ ...state, [itemName]: itemValue, "states": false, "interactions": false }));
+    } else {
+      setOptions(state => ({ ...state, [itemName]: itemValue }));
+    }
+  }
+
+  const changeAddOptions = (itemName: string, itemValue: boolean|string) => {
+    setAddOptions(state => ({ ...state, [itemName]: itemValue }));
+  }
+
+  const changeComponent = (itemValue: string) => {
+    setComponentName(itemValue);
+  }
+
   return (
     <>
       <PseudoNavBar />
@@ -21,16 +41,16 @@ export const Home: React.FC = () => {
 
         <Content>
           <p className="font-bold text-base mb-4 text-[#1E1E1E]">Which component do you want to generate documentation?</p>
-          <Input placeholder="e.g.: button, accordion, etc" />
+          <Input changeComponent={changeComponent} placeholder="e.g.: button, accordion, etc" />
         </Content>
 
         <Content>
           <h2 className="font-bold text-xl my-8">Personalization</h2>
         </Content>
 
-        <PersonalizationItems />
+        <PersonalizationItems options={options} addOptions={addOptions} changeOptions={changeOptions} changeAddOptions={changeAddOptions} />
 
-        <GenerateButton />
+        <GenerateButton options={options} componentName={componentName} addOptions={addOptions} />
       </div>
   </>
   );
