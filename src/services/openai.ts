@@ -71,5 +71,9 @@ export default async function generateDoc(component: string, options: options, a
         }
     });
 
-    return response;
+    const { data } = response;
+
+    const { message } = data.choices[0]
+
+    return message;
 }
