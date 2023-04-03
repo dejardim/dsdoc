@@ -47,6 +47,8 @@ const generatePrompt = (component: string, options: options, addOptions: additio
         prompt = `${prompt} Add code examples for the implementation of this component.`;
     }
 
+    prompt = `${prompt} Format the response in markdown.`;
+
     return prompt;
 }
 
