@@ -1,12 +1,20 @@
 import React from "react";
 import generateDoc from "../services/openai";
 import { additionalOptions, options } from "../interfaces/options.interfaces";
+import { useNavigate } from "react-router-dom";
 
 export const GenerateButton: React.FC<buttonProps> = (props) => {
+  const navigate = useNavigate()
+
   const generate = async () => {
     const response = await generateDoc(props.componentName, props.options, props.addOptions);
 
     console.log(response);
+    navigate("/app", { state: response });
+    /*
+    * this.props.history.push({ pathname: '/app', state: response })
+    * const {state} = this.props.location
+    */
   }
 
   return (
