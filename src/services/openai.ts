@@ -52,17 +52,45 @@ const generatePrompt = (component: string, options: options, addOptions: additio
     return prompt;
 }
 
-export default async function generateDoc(apikey: string, component: string, options: options, additionalOptions: additionalOptions) {
+const cleanup = (text: string) => {
+    const minified = text.replace(/\s+/g, ' ').trim();
+
+    const escaped = minified.replace(/"/g, "\"");
+
+    return escaped;
+}
+
+const getCodeContent = async (code:string) => {
+    if (code !== '') {
+        const cleaned = cleanup(code);
+
+        return cleaned;
+    }
+
+    return null;
+}
+
+export default async function generateDoc(apikey: string, component: string, code: string, options: options, additionalOptions: additionalOptions) {
+    const codeContent = await getCodeContent(code);
     const prompt = generatePrompt(component, options, additionalOptions);
+
+    const messages = [];
+
+    if (codeContent) {
+        messages.push({
+            "role": "user",
+            "content": `Consider this ${component} component code: ${codeContent}`
+        });
+    }
+
+    messages.push({
+        "role": "user",
+        "content": prompt
+    });
 
     const body = {
         "model": "gpt-3.5-turbo",
-        "messages": [
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
+        "messages": messages
     };
     
     const response = await axios.post('https://api.openai.com/v1/chat/completions', body, {

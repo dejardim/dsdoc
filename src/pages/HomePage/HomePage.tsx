@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Content } from "../../components/Content";
@@ -8,10 +8,26 @@ import { PseudoNavBar } from "../../components/PseudoNavBar";
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const [info, setInfo] = useState({ apiKey: '', componentName: '' });
+  const [info, setInfo] = useState({ apiKey: '', componentName: '', componentCode: '' });
 
   const changeComponent = (itemKey: string, itemValue: string) => {
     setInfo(state => ({ ...state, [itemKey]: itemValue }));
+  }
+
+  const handleFile = (e:ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+
+    if (files) {
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        const text: string = (e.target?.result || '') as string;
+
+        setInfo(state => ({ ...state, componentCode: text  }));
+      }
+
+      reader.readAsText(files[0]);
+    }
   }
 
   const next = () => {
@@ -48,7 +64,7 @@ export const Home: React.FC = () => {
 
         <Content>
           <p className="font-bold text-base mb-2 text-[#1E1E1E]">You may provide the used code in your component:</p>
-          <input type="file" name="componentCode" />
+          <input type="file" name="componentCode" onChange={handleFile} />
         </Content>
       </div>
   </>

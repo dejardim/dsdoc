@@ -11,14 +11,10 @@ export const GenerateButton: React.FC<buttonProps> = (props) => {
   const generate = async () => {
     setLoading(!loading);
     
-    const response = await generateDoc(props.apiKey, props.componentName, props.options, props.addOptions);
+    const response = await generateDoc(props.apiKey, props.componentName, props.componentCode, props.options, props.addOptions);
     
     setLoading(!loading);
     navigate("/app", { state: response });
-    /*
-    * this.props.history.push({ pathname: '/app', state: response })
-    * const {state} = this.props.location
-    */
   }
 
   return (
@@ -33,5 +29,6 @@ interface buttonProps {
   apiKey: string;
   options: options;
   componentName: string;
+  componentCode: string;
   addOptions: additionalOptions
 }

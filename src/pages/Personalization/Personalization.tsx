@@ -27,7 +27,7 @@ export const Personalization: React.FC = () => {
   return (
     <>
       <PseudoNavBar>
-        <GenerateButton apiKey={state?.apiKey} options={options} componentName={state?.componentName} addOptions={addOptions} />
+        <GenerateButton apiKey={state?.apiKey} options={options} componentName={state?.componentName} componentCode={state?.componentCode} addOptions={addOptions} />
       </PseudoNavBar>
 
       <div className="mx-auto mb-8" style={{maxWidth: '1280px'}}>
