@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 
 export const GenerateButton: React.FC<buttonProps> = (props) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const generate = async () => {
     setLoading(!loading);
     
-    const response = await generateDoc(props.componentName, props.options, props.addOptions);
+    const response = await generateDoc(props.apiKey, props.componentName, props.options, props.addOptions);
     
     setLoading(!loading);
     navigate("/app", { state: response });
@@ -22,7 +22,7 @@ export const GenerateButton: React.FC<buttonProps> = (props) => {
   }
 
   return (
-    <button onClick={generate} className="bg-[#1E1E1E] rounded-lg text-white font-semibold p-1.5 flex items-center" disabled={props.componentName === ''}>
+    <button onClick={generate} className="bg-[#1E1E1E] rounded-lg text-white font-semibold p-1.5 flex items-center disabled:opacity-50" disabled={props.componentName === ''}>
       { !loading ? "Generate" : "" }
       <ClipLoader size={30} color="#ffffff" loading={loading} />
     </button>
@@ -30,6 +30,7 @@ export const GenerateButton: React.FC<buttonProps> = (props) => {
 };
 
 interface buttonProps {
+  apiKey: string;
   options: options;
   componentName: string;
   addOptions: additionalOptions

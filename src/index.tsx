@@ -7,6 +7,7 @@ import {
 import "./index.css";
 import { App } from "./pages/AppPage";
 import { Home } from "./pages/HomePage";
+import { Personalization } from "./pages/Personalization";
 import reportWebVitals from './reportWebVitals';
 
 const rootElement = ReactDOM.createRoot(
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     path: "/app",
     element: <App />,
   },
+  {
+    path: "/personalization",
+    element: <Personalization />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

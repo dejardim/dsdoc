@@ -1,36 +1,27 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Content } from "../../components/Content";
 import { Divider } from "../../components/Divider";
-import { GenerateButton } from "../../components/GenerateButton";
 import { Input } from "../../components/Input";
-import { PersonalizationItems } from "../../components/PersonalizationItems";
 import { PseudoNavBar } from "../../components/PseudoNavBar";
 
 export const Home: React.FC = () => {
-  const [componentName, setComponentName] = useState('');
-  const [options, setOptions] = useState({ whentouse: false, anatomy: false, placement: false, content: false, behavior: false, states: false, interactions: false });
-  const [addOptions, setAddOptions] = useState({ links: '0', interactivestates: false, fontconfig: false, sizevariation: false, bestpractices: false, codeexamples: false });
+  const navigate = useNavigate();
+  const [info, setInfo] = useState({ apiKey: '', componentName: '' });
 
-  const changeOptions = (itemName: string, itemValue: boolean) => {
-    if (itemName === "behavior" && !itemValue) {
-      setOptions(state => ({ ...state, [itemName]: itemValue, "states": false, "interactions": false }));
-    } else {
-      setOptions(state => ({ ...state, [itemName]: itemValue }));
-    }
+  const changeComponent = (itemKey: string, itemValue: string) => {
+    setInfo(state => ({ ...state, [itemKey]: itemValue }));
   }
 
-  const changeAddOptions = (itemName: string, itemValue: boolean|string) => {
-    setAddOptions(state => ({ ...state, [itemName]: itemValue }));
-  }
-
-  const changeComponent = (itemValue: string) => {
-    setComponentName(itemValue);
+  const next = () => {
+    navigate("/personalization", { state: info });
   }
 
   return (
     <>
       <PseudoNavBar>
-        <GenerateButton options={options} componentName={componentName} addOptions={addOptions} />
+        <button onClick={next} className="bg-[#1E1E1E] p-1.5 font-semibold rounded-lg text-white disabled:opacity-50" disabled={info.componentName === '' || info.apiKey === ''}>Continue</button>
       </PseudoNavBar>
 
       <div className="mx-auto" style={{maxWidth: '1280px'}}>
@@ -42,15 +33,23 @@ export const Home: React.FC = () => {
         <Divider />
 
         <Content>
-          <p className="font-bold text-base mb-4 text-[#1E1E1E]">Which component do you want to generate documentation?</p>
-          <Input changeComponent={changeComponent} placeholder="e.g.: button, accordion, etc" />
+          <p className="font-bold text-base mb-4 text-[#1E1E1E]">Enter your OpenAI API key:</p>
+          <Input changeComponent={changeComponent} name="apiKey" inputType="password" placeholder="api key" />
         </Content>
+
+        <Divider />
 
         <Content>
-          <h2 className="font-bold text-xl my-8">Personalization</h2>
+          <p className="font-bold text-base mb-4 text-[#1E1E1E]">Which component do you want to generate documentation for?</p>
+          <Input changeComponent={changeComponent} name="componentName" placeholder="e.g.: button, accordion, etc" />
         </Content>
+        
+        <br />
 
-        <PersonalizationItems options={options} addOptions={addOptions} changeOptions={changeOptions} changeAddOptions={changeAddOptions} />
+        <Content>
+          <p className="font-bold text-base mb-2 text-[#1E1E1E]">You may provide the used code in your component:</p>
+          <input type="file" name="componentCode" />
+        </Content>
       </div>
   </>
   );

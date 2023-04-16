@@ -52,7 +52,7 @@ const generatePrompt = (component: string, options: options, addOptions: additio
     return prompt;
 }
 
-export default async function generateDoc(component: string, options: options, additionalOptions: additionalOptions) {
+export default async function generateDoc(apikey: string, component: string, options: options, additionalOptions: additionalOptions) {
     const prompt = generatePrompt(component, options, additionalOptions);
 
     const body = {
@@ -67,7 +67,7 @@ export default async function generateDoc(component: string, options: options, a
     
     const response = await axios.post('https://api.openai.com/v1/chat/completions', body, {
         headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`
+            Authorization: `Bearer ${apikey}`
         }
     });
 
