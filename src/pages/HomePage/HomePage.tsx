@@ -29,7 +29,9 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <PseudoNavBar />
+      <PseudoNavBar>
+        <GenerateButton options={options} componentName={componentName} addOptions={addOptions} />
+      </PseudoNavBar>
 
       <div className="mx-auto" style={{maxWidth: '1280px'}}>
         <Content>
@@ -49,8 +51,6 @@ export const Home: React.FC = () => {
         </Content>
 
         <PersonalizationItems options={options} addOptions={addOptions} changeOptions={changeOptions} changeAddOptions={changeAddOptions} />
-
-        <GenerateButton options={options} componentName={componentName} addOptions={addOptions} />
       </div>
   </>
   );
