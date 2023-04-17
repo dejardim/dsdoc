@@ -36,7 +36,7 @@ export const Home: React.FC = () => {
         
         reader.readAsText(files[0]);
       } else {
-        toast.error('Arquivo não suportado', { theme: "dark" });
+        toast.error('File not supported', { theme: "dark" });
       }
 
     }
