@@ -5,6 +5,9 @@ import { Content } from "../../components/Content";
 import { Divider } from "../../components/Divider";
 import { Input } from "../../components/Input";
 import { PseudoNavBar } from "../../components/PseudoNavBar";
+import { toast } from "react-toastify";
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -18,15 +21,24 @@ export const Home: React.FC = () => {
     const { files } = e.target;
 
     if (files) {
-      const reader = new FileReader();
+      const filename = files[0].name;
+      const extension = filename.substring(filename.lastIndexOf('.') + 1);
+      const extensionsSupport = ['vue', 'js', 'jsx', 'ts', 'tsx'];
 
-      reader.onload = async (e) => {
-        const text: string = (e.target?.result || '') as string;
-
-        setInfo(state => ({ ...state, componentCode: text  }));
+      if (extensionsSupport.includes(extension)) {
+        const reader = new FileReader();
+  
+        reader.onload = async (e) => {
+          const text: string = (e.target?.result || '') as string;
+  
+          setInfo(state => ({ ...state, componentCode: text  }));
+        }
+        
+        reader.readAsText(files[0]);
+      } else {
+        toast.error('Arquivo não suportado', { theme: "dark" });
       }
 
-      reader.readAsText(files[0]);
     }
   }
 

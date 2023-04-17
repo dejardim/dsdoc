@@ -93,15 +93,19 @@ export default async function generateDoc(apikey: string, component: string, cod
         "messages": messages
     };
     
-    const response = await axios.post('https://api.openai.com/v1/chat/completions', body, {
-        headers: {
-            Authorization: `Bearer ${apikey}`
-        }
-    });
-
-    const { data } = response;
-
-    const { message } = data.choices[0]
-
-    return message;
+    try {
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', body, {
+            headers: {
+                Authorization: `Bearer ${apikey}`
+            }
+        });
+    
+        const { data } = response;
+    
+        const { message } = data.choices[0]
+    
+        return message;
+    } catch (err) {
+        throw Error('Something went wrong');
+    }
 }

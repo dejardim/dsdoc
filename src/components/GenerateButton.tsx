@@ -3,6 +3,9 @@ import generateDoc from "../services/openai";
 import { additionalOptions, options } from "../interfaces/options.interfaces";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export const GenerateButton: React.FC<buttonProps> = (props) => {
   const navigate = useNavigate();
@@ -11,10 +14,15 @@ export const GenerateButton: React.FC<buttonProps> = (props) => {
   const generate = async () => {
     setLoading(!loading);
     
-    const response = await generateDoc(props.apiKey, props.componentName, props.componentCode, props.options, props.addOptions);
-    
-    setLoading(!loading);
-    navigate("/app", { state: response });
+    try {
+      const response = await generateDoc(props.apiKey, props.componentName, props.componentCode, props.options, props.addOptions);
+      
+      setLoading(!loading);
+      navigate("/app", { state: response });
+    } catch (err) {
+      setLoading(false);
+      toast.error('Something went wrong, please verify your api key and try again later.', { theme: "dark" });
+    } 
   }
 
   return (
